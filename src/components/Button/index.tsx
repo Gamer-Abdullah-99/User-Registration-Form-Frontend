@@ -11,7 +11,7 @@ const Button = (props: ButtonProps) => {
 
     return (
         <div>
-            <button onClick={() => router.push(url)}>{title}</button>
+            <button className="bg-white text-black font-medium transition-colors rounded-lg border border-white px-4 py-1 hover:bg-black hover:text-white" onClick={() => router.push(url)}>{title}</button>
         </div>
     );
 }
