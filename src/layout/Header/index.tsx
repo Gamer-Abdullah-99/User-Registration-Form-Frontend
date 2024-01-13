@@ -3,11 +3,11 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const Header = () => {
+const Header: React.FC = () => {
     const router = useRouter()
     const pathname = usePathname()
 
-    const [user, setUser] = useState(true)
+    const [user, setUser] = useState(false)
 
     const handleLogout = () => {
         setUser(false)
