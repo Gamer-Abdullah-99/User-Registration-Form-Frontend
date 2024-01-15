@@ -1,6 +1,13 @@
-import { LoginFormType, RegisterFormType } from '@/utils/types';
+import ErrorToast from '@/components/Toast/error';
+import SuccessToast from '@/components/Toast/success';
+import { Login } from '@/services/user';
+import { userState } from '@/store/atom';
+import { LoginFormType, UserDataStateType } from '@/utils/types';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Router, useRouter } from 'next/router';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
@@ -8,14 +15,29 @@ const schema = yup.object().shape({
     password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
 });
 
-const Login: React.FC = () => {
+const Page: React.FC = () => {
+    const router = useRouter()
+
+    const [toast, setToast] = useState<string>("")
+    const [userData, setUserData] = useRecoilState(userState)
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormType>({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data: LoginFormType) => {
-        console.log(data);
+    const onSubmit = async (data: LoginFormType) => {
+        try {
+            const loginRes: UserDataStateType | undefined = await Login(data)
+            if (loginRes != undefined) {
+                setUserData(loginRes)
+                console.log(loginRes)
+                setToast("success")
+                router.push("/")
+            }
+        } catch (err) {
+            console.log(err)
+            setToast("error")
+        }
     };
 
     return (
@@ -31,11 +53,24 @@ const Login: React.FC = () => {
                     <div className='grid grid-cols-1 justify-center items-center'>
                         <input placeholder='Password' type="password" {...register('password')} className={`border text-black px-4 py-1 rounded-md w-60 ${errors.password ? "border-red-600" : null}`} />
                     </div>
-                    <button className=' px-4 py-1 text-black bg-white rounded-md font-bold border transition-colors border-white hover:bg-black hover:text-white' type="submit">Login</button>
+                    <button className='px-4 py-1 text-black bg-white rounded-md font-bold border transition-colors border-white hover:bg-black hover:text-white' type="submit">Login</button>
                 </div>
             </form>
+            <div className="fixed bottom-4 left-10 z-50">
+                {toast === "submitted" ? (
+                    <SuccessToast
+                        toast={toast}
+                        setToast={setToast}
+                    />
+                ) : toast === "error" ? (
+                    <ErrorToast
+                        toast={toast}
+                        setToast={setToast}
+                    />
+                ) : null}
+            </div>
         </div>
     );
 }
 
-export default Login;
+export default Page;

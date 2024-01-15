@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface RegisterFormType {
   username: string;
   email: string;
@@ -44,4 +46,9 @@ export interface UserLoginResponseType {
   accessToken: string;
   user: UserDataType;
   message: string;
+}
+
+export interface ToastType {
+  toast: string;
+  setToast: Dispatch<SetStateAction<string>>;
 }
