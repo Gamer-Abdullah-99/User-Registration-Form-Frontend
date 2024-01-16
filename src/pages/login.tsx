@@ -4,9 +4,10 @@ import { Login } from '@/services/user';
 import { userState } from '@/store/atom';
 import { LoginFormType, UserDataStateType } from '@/utils/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { PiUserCircleFill } from 'react-icons/pi';
 import { useRecoilState } from 'recoil';
 import * as yup from 'yup';
 
@@ -41,10 +42,13 @@ const Page: React.FC = () => {
     };
 
     return (
-        <div className='w-screen h-screen flex items-center justify-center pt-20'>
+        <div className='w-screen h-screen flex items-center justify-center pt-20 bg-pic'>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className='px-10 py-6 w-96 flex flex-col justify-center items-center rounded-md gap-8 border border-white'>
-                    <h1 className='font-bold text-3xl text-white'>Login</h1>
+                <div className='px-10 bg-black py-10 w-96 flex flex-col justify-center items-center rounded-xl gap-8 border border-white'>
+
+                    <p className='text-white text-8xl'><PiUserCircleFill /></p>
+
+                    <h1 className='font-bold text-xl text-white'>Login to an existing account</h1>
 
                     <div className='grid grid-cols-1 justify-center items-center '>
                         <input placeholder='Email Address' type="email" {...register('email')} className={`border text-black px-4 py-1 rounded-md w-60 ${errors.email ? "border-red-600" : null}`} />
@@ -53,7 +57,7 @@ const Page: React.FC = () => {
                     <div className='grid grid-cols-1 justify-center items-center'>
                         <input placeholder='Password' type="password" {...register('password')} className={`border text-black px-4 py-1 rounded-md w-60 ${errors.password ? "border-red-600" : null}`} />
                     </div>
-                    <button className='px-4 py-1 text-black bg-white rounded-md font-bold border transition-colors border-white hover:bg-black hover:text-white' type="submit">Login</button>
+                    <button className='px-4 py-1 w-60 text-black bg-white rounded-md font-bold border transition-colors border-white hover:bg-black hover:text-white' type="submit">Login</button>
                 </div>
             </form>
             <div className="fixed bottom-4 left-10 z-50">
